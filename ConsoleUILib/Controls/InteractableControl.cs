@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleUILib.Window;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,7 @@ namespace ConsoleUILib.Controls
         public virtual void OnKeyDown() { }
 
         public bool IsSelected { get; set; }
+
+        public InteractableControl(BaseWindow parent) : base(parent) { }
     }
 }

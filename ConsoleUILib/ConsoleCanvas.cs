@@ -14,8 +14,8 @@ namespace ConsoleUILib
 
         public static void DrawRect(int x, int y, int w, int h, Color clr) {
             Console.ResetColor();
-            SetForegroundColor(clr);
-            string lineFill = fillChar.Repeat(w);
+            SetBackgroundColor(clr);
+            string lineFill = " ".Repeat(w);
 
             for (int yT = y; yT < y + h; yT++) {
                 Console.SetCursorPosition(x, yT);
@@ -44,7 +44,7 @@ namespace ConsoleUILib
             }
         }
 
-        private static void DrawRectGradientHorizontally(int x, int y, int w, int h, Color start, Color end) {
+        private static void DrawRectGradientHorizontally(int x, int y, int w, int h, Color start, Color end) { // TODO: Generate full line to improve performance as well
             if (w < 2) throw new ArgumentOutOfRangeException("w", "Width must be more than or equal to 2 for horizontal gradients.");
 
             Console.ResetColor();
@@ -119,10 +119,5 @@ namespace ConsoleUILib
                                             start.B + (stepB * i));
             }
         }
-    }
-
-    public enum Orientation {
-        HORIZONTAL,
-        VERTICAL
     }
 }

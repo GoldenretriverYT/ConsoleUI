@@ -26,6 +26,14 @@ namespace ConsoleUILib.Window
             this.Controls.Add(control);
         }
 
+        public override void DrawWindow() {
+            base.DrawWindow();
+
+            foreach(BaseControl ctrl in Controls) {
+                ctrl.DrawControl();
+            }
+        }
+
         public void FindNextInteractable(int lastIdx, out BaseControl outCtrl, out int outIdx)
         {
             int idx = lastIdx + 1;
