@@ -21,6 +21,8 @@ namespace ConsoleUILib.Controls {
         public HAlign HorizontalAlign = HAlign.LEFT;
         public VAlign VerticalAlign = VAlign.TOP;
 
+        public EventHandler Pressed;
+
 
         public Button(BaseWindow parent, int x, int y, int width, int height) : base(parent) {
             this.X = x;
@@ -44,9 +46,13 @@ namespace ConsoleUILib.Controls {
         }
 
         public override void OnPressed() {
-            Debug.WriteLine("Button pressed event");
             base.OnPressed();
-            Text = "Pressed!";
+            InvokePressed();
+        }
+
+        private void InvokePressed() {
+            EventHandler handler = Pressed;
+            handler?.Invoke(this, new());
         }
     }
 }
