@@ -1,6 +1,7 @@
 ﻿using ConsoleUILib.Window;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,12 @@ namespace ConsoleUILib.Controls {
 
             ConsoleCanvas.DrawRect(ActualX, ActualY, W, H, IsSelected ? FocusedColor : RegularColor);
             ConsoleCanvas.DrawString(Text, ActualX + xOffset, ActualY + yOffset, W, H, TextColor, IsSelected ? FocusedColor : RegularColor);
+        }
+
+        public override void OnPressed() {
+            Debug.WriteLine("Button pressed event");
+            base.OnPressed();
+            Text = "Pressed!";
         }
     }
 }

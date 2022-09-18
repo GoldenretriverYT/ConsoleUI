@@ -11,7 +11,7 @@ namespace ConsoleUILib.Controls
     {
         public virtual bool EnterShouldPress => true;
         public virtual void OnPressed() { }
-        public virtual void OnKeyDown() { }
+        public virtual void OnKeyDown(ConsoleKeyInfo key) { }
 
         public bool IsSelected { get; set; }
 

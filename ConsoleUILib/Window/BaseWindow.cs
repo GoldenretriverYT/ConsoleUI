@@ -36,5 +36,9 @@ namespace ConsoleUILib.Window
             ConsoleCanvas.DrawRect(X, Y, Width, 1, Color.DarkGray);
             ConsoleCanvas.DrawString(Title, X, Y, Width, 1, Color.White, Color.DarkGray);
         }
+
+        public virtual void HandleKeyDown(ConsoleKeyInfo key) {
+
+        }
     }
 }

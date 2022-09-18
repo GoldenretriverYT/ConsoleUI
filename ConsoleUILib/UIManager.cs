@@ -14,17 +14,23 @@ namespace ConsoleUILib
 
         public void Start()
         {
+            RenderWindows();
+
             while(true)
             {
                 Console.ResetColor();
 
-                foreach(BaseWindow window in Windows)
-                {
-                    window.DrawWindow();
-                    Console.ResetColor();
-                }
+                ConsoleKeyInfo cki = Console.ReadKey();
+                FocusedWindow.HandleKeyDown(cki);
 
-                Console.ReadKey();
+                RenderWindows();
+            }
+        }
+
+        private void RenderWindows() {
+            foreach (BaseWindow window in Windows) {
+                window.DrawWindow();
+                Console.ResetColor();
             }
         }
 
