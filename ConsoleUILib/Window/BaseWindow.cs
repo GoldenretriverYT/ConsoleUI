@@ -16,6 +16,8 @@ namespace ConsoleUILib.Window
         public int Height { get; set; }
         public string Title { get; set; }
 
+        public event EventHandler RenderDone;
+
         public virtual void DrawWindow()
         {
             if(Width < 1 || Height < 1)
@@ -39,6 +41,11 @@ namespace ConsoleUILib.Window
 
         public virtual void HandleKeyDown(ConsoleKeyInfo key) {
 
+        }
+
+        public virtual void HandleRenderDone() {
+            EventHandler ev = RenderDone;
+            ev?.Invoke(this, new());
         }
     }
 }

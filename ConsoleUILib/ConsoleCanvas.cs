@@ -94,7 +94,7 @@ namespace ConsoleUILib
 
                 off++;
 
-                if (off > h) break;
+                if (off >= h) break;
             }
         }
 

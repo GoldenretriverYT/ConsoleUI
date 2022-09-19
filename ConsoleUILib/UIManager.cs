@@ -1,40 +1,53 @@
 ﻿using ConsoleUILib.Window;
+using System.Diagnostics;
 
 namespace ConsoleUILib
 {
     public class UIManager
     {
-        private List<BaseWindow> Windows { get; init; }
-        public BaseWindow FocusedWindow { get; set; }
+        private static List<BaseWindow> Windows { get; } = new();
+        public static BaseWindow FocusedWindow { get; set; }
 
-        public UIManager()
+        public static void Start()
         {
-            this.Windows = new();
-        }
+            Console.CursorVisible = false;
+            Stopwatch sw = new();
 
-        public void Start()
-        {
             RenderWindows();
 
             while(true)
             {
                 Console.ResetColor();
 
-                ConsoleKeyInfo cki = Console.ReadKey();
-                FocusedWindow.HandleKeyDown(cki);
+                if (Console.KeyAvailable) {
+                    ConsoleKeyInfo cki = Console.ReadKey();
+                    FocusedWindow.HandleKeyDown(cki);
+                }
 
+                sw.Restart();
                 RenderWindows();
+
+                foreach(BaseWindow window in Windows) {
+                    window.HandleRenderDone();
+                }
+
+                Console.Title = "- | Frame Render Time: " + Math.Floor((double)sw.Elapsed.TotalMilliseconds) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / sw.Elapsed.TotalMilliseconds) + " (limited to 30)";
+                Thread.Sleep(1000 / 30);
             }
         }
 
-        private void RenderWindows() {
+        private static void RenderWindows() {
             foreach (BaseWindow window in Windows) {
                 window.DrawWindow();
                 Console.ResetColor();
             }
         }
 
-        public void AddWindow(BaseWindow window) {
+        public static void ForceRender() {
+            RenderWindows();
+        }
+
+        public static void AddWindow(BaseWindow window) {
             Windows.Add(window);
             FocusedWindow = window;
         }

@@ -2,14 +2,16 @@
 using ConsoleUILib.Controls;
 using ConsoleUILib.Window;
 
-UIManager um = new();
-
 CustomWindow amogus = new CustomWindow(2, 2, 20, 15);
 amogus.Title = "Text Align Test";
+amogus.RenderDone += (object sender, EventArgs e) => {
+    amogus.Title = "Render at " + DateTimeOffset.Now.Hour.ToString("00") + ":" + DateTimeOffset.Now.Minute.ToString("00") + ":" + DateTimeOffset.Now.Second.ToString("00");
+};
 
 Button leftButton = new Button(amogus, 5, 2, 10, 2);
 leftButton.Text = "left";
 leftButton.HorizontalAlign = HAlign.LEFT;
+leftButton.PressAnimation = ButtonPressAnimation.POP_OUT;
 leftButton.Pressed += (object sender, EventArgs e) => {
     (sender as Button).Text = "Pressed!";
 };
@@ -34,5 +36,5 @@ rightButton.Pressed += (object sender, EventArgs e) => {
 
 amogus.AddControl(rightButton);
 
-um.AddWindow(amogus);
-um.Start();
+UIManager.AddWindow(amogus);
+UIManager.Start();

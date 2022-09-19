@@ -13,8 +13,10 @@ namespace ConsoleUILib.Controls {
         public int H { get; set; }
 
         public Color FocusedColor { get; set; } = Color.DimGray;
+        public Color PressedColor { get; set; } = Color.FromArgb(26, 26, 26);
         public Color RegularColor { get; set; } = Color.SlateGray;
         public Color TextColor { get; set; } = Color.White;
+        public ButtonPressAnimation PressAnimation { get; set; } = ButtonPressAnimation.SWITCH_COLOR;
 
         public string Text { get; set; } = "Button";
 
@@ -23,6 +25,7 @@ namespace ConsoleUILib.Controls {
 
         public EventHandler Pressed;
 
+        private bool wasJustPressed = false;
 
         public Button(BaseWindow parent, int x, int y, int width, int height) : base(parent) {
             this.X = x;
@@ -41,12 +44,31 @@ namespace ConsoleUILib.Controls {
                 xOffset = W - Text.Length;
             }
 
-            ConsoleCanvas.DrawRect(ActualX, ActualY, W, H, IsSelected ? FocusedColor : RegularColor);
-            ConsoleCanvas.DrawString(Text, ActualX + xOffset, ActualY + yOffset, W, H, TextColor, IsSelected ? FocusedColor : RegularColor);
+            if (!wasJustPressed) {
+                ConsoleCanvas.DrawRect(ActualX, ActualY, W, H, IsSelected ? FocusedColor : RegularColor);
+                ConsoleCanvas.DrawString(Text, ActualX + xOffset, ActualY + yOffset, W, H, TextColor, IsSelected ? FocusedColor : RegularColor);
+            }else {
+                if(PressAnimation == ButtonPressAnimation.SWITCH_COLOR) {
+                    ConsoleCanvas.DrawRect(ActualX, ActualY, W, H, PressedColor);
+                    ConsoleCanvas.DrawString(Text, ActualX + xOffset, ActualY + yOffset, W, H, TextColor, PressedColor);
+                }else if(PressAnimation == ButtonPressAnimation.POP_OUT) {
+                    ConsoleCanvas.DrawRect(ActualX, ActualY, W, H, PressedColor);
+                    ConsoleCanvas.DrawRect(ActualX+1, ActualY+1, W, H, RegularColor);
+
+                    ConsoleCanvas.DrawString(Text, ActualX + xOffset + 1, ActualY + yOffset + 1, W, H, TextColor, RegularColor);
+                }
+            }
         }
 
         public override void OnPressed() {
             base.OnPressed();
+
+            wasJustPressed = true;
+            ThreadPool.QueueUserWorkItem((obj) => {
+                Thread.Sleep(300);
+                wasJustPressed = false;
+            });
+
             InvokePressed();
         }
 
@@ -54,5 +76,10 @@ namespace ConsoleUILib.Controls {
             EventHandler handler = Pressed;
             handler?.Invoke(this, new());
         }
+    }
+
+    public enum ButtonPressAnimation {
+        SWITCH_COLOR,
+        POP_OUT
     }
 }
