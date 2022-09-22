@@ -1,4 +1,5 @@
 ﻿using ConsoleUILib.Exceptions;
+using ConsoleUILib.Structs;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,6 +41,10 @@ namespace ConsoleUILib.Window
         }
 
         public virtual void HandleKeyDown(ConsoleKeyInfo key) {
+
+        }
+
+        public virtual void HandleMouse(MouseEvent key) {
 
         }
 

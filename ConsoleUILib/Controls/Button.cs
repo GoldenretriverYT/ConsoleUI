@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleUILib.Controls {
-    public class Button : InteractableControl {
+    public class Button : SizedControl {
         public int W { get; set; }
         public int H { get; set; }
 
@@ -44,6 +44,8 @@ namespace ConsoleUILib.Controls {
                 xOffset = W - Text.Length;
             }
 
+            
+
             if (!wasJustPressed) {
                 ConsoleCanvas.DrawRect(ActualX, ActualY, W, H, IsSelected ? FocusedColor : RegularColor);
                 ConsoleCanvas.DrawString(Text, ActualX + xOffset, ActualY + yOffset, W, H, TextColor, IsSelected ? FocusedColor : RegularColor);
@@ -60,6 +62,7 @@ namespace ConsoleUILib.Controls {
             }
         }
 
+
         public override void OnPressed() {
             base.OnPressed();
 
@@ -75,6 +78,10 @@ namespace ConsoleUILib.Controls {
         private void InvokePressed() {
             EventHandler handler = Pressed;
             handler?.Invoke(this, new());
+        }
+
+        public override Size GetSize() {
+            return new(W, H);
         }
     }
 

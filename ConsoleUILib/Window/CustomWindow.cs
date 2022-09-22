@@ -1,5 +1,6 @@
 ﻿using ConsoleUILib.Controls;
 using ConsoleUILib.Exceptions;
+using ConsoleUILib.Structs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,7 +64,7 @@ namespace ConsoleUILib.Window
 
         public override void HandleKeyDown(ConsoleKeyInfo key) {
             base.HandleKeyDown(key);
-            Debug.WriteLine("Window " + Title + " handling key press " + key.Key.ToString());
+            Debug.WriteLine("Window " + Title + " handling key press " + key.Key.ToString() + " (SHIFT: " + key.Modifiers.HasFlag(ConsoleModifiers.Shift) + ")");
 
             if(key.Key == ConsoleKey.Tab) {
                 FindNextInteractable(FocusedIndex, out _, out int newIdx);
@@ -83,6 +84,16 @@ namespace ConsoleUILib.Window
             }
 
             Focused?.OnKeyDown(key);
+        }
+
+        public override void HandleMouse(MouseEvent key) {
+            base.HandleMouse(key);
+
+            foreach(BaseControl control in Controls) {
+                if (control is not SizedControl iCtrl) continue; // OMG THANKS KNELIS (on SO) FOR THIS KNOWLEDGE
+                
+                iCtrl.
+            }
         }
     }
 }
