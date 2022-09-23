@@ -31,7 +31,7 @@ namespace ConsoleUILib.Structs {
         }
 
         private RECT GetConsoleRect() {
-            NativeMethods.GetWindowRect(UIManager.handle, out RECT rect);
+            if (!NativeMethods.GetWindowRect(UIManager.handle, out RECT rect)) throw new Exception("nah");
             return rect;
         }
 

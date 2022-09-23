@@ -92,7 +92,11 @@ namespace ConsoleUILib.Window
             foreach(BaseControl control in Controls) {
                 if (control is not SizedControl iCtrl) continue; // OMG THANKS KNELIS (on SO) FOR THIS KNOWLEDGE
                 
-                iCtrl.
+                if(key.CharX > iCtrl.X && key.CharX < iCtrl.X + iCtrl.GetSize().X &&
+                    key.CharY > iCtrl.Y && key.CharY < iCtrl.Y + iCtrl.GetSize().Y)
+                {
+                    iCtrl.OnPressed();
+                }
             }
         }
     }
