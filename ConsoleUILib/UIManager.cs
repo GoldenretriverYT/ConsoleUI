@@ -41,7 +41,7 @@ namespace ConsoleUILib
 
                 NativeMethods.GetNumberOfConsoleInputEvents(handle, out uint eventsAvailable);
 
-                if (eventsAvailable >= 0) {
+                if (eventsAvailable > 0) {
                     var record = new NativeMethods.INPUT_RECORD();
                     uint recordLen = 0;
 
@@ -66,6 +66,7 @@ namespace ConsoleUILib
                             ConsoleKeyInfo cki = new(record.KeyEvent.UnicodeChar, (ConsoleKey)record.KeyEvent.wVirtualKeyCode, cks.HasFlag(NativeMethods.ControlKeyState.SHIFT_PRESSED), cks.HasFlag(NativeMethods.ControlKeyState.LEFT_ALT_PRESSED) || cks.HasFlag(NativeMethods.ControlKeyState.RIGHT_ALT_PRESSED), cks.HasFlag(NativeMethods.ControlKeyState.LEFT_CTRL_PRESSED) || cks.HasFlag(NativeMethods.ControlKeyState.RIGHT_CTRL_PRESSED));
                             if(record.KeyEvent.bKeyDown == true) FocusedWindow.HandleKeyDown(cki);
                             break;
+                        default: break;
                     }
 
                 }
