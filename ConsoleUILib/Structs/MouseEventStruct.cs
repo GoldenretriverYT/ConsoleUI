@@ -1,7 +1,9 @@
 ﻿using ConsoleUILib.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static ConsoleUILib.Internal.NativeMethods;
@@ -20,23 +22,24 @@ namespace ConsoleUILib.Structs {
             RECT cRect = GetConsoleRect();
             RECT charRect = GetRectPerChar(cRect);
 
-            return (X - cRect.Left) / charRect.Width;
+            return (X);
         }
 
         private int GetCharY() {
             RECT cRect = GetConsoleRect();
             RECT charRect = GetRectPerChar(cRect);
 
-            return (Y - cRect.Top) / charRect.Height;
+            return Y;
         }
 
         private RECT GetConsoleRect() {
-            if (!NativeMethods.GetWindowRect(UIManager.handle, out RECT rect)) throw new Exception("nah");
+            IntPtr hndl = Process.GetCurrentProcess().MainWindowHandle;
+            if (!NativeMethods.GetWindowRect(GetConsoleWindow(), out RECT rect)) throw new Exception(Marshal.GetLastWin32Error().ToString());
             return rect;
         }
 
         private RECT GetRectPerChar(RECT rect) {
-            return new RECT() { Top = 0, Left = 0, Bottom = Console.WindowHeight / rect.Height, Right = Console.WindowWidth / rect.Width };
+            return new RECT() { Top = 0, Left = 0, Bottom = rect.Height / Console.WindowHeight, Right = rect.Width / Console.WindowWidth };
         }
     }
 

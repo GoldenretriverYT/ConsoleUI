@@ -81,6 +81,9 @@ namespace ConsoleUILib.Internal {
         [DllImportAttribute("kernel32.dll", SetLastError = true)]
         public static extern ConsoleHandle GetStdHandle(Int32 nStdHandle);
 
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetConsoleWindow();
+
         [DllImportAttribute("kernel32.dll", SetLastError = true)]
         [return: MarshalAsAttribute(UnmanagedType.Bool)]
         public static extern Boolean ReadConsoleInput(ConsoleHandle hConsoleInput, ref INPUT_RECORD lpBuffer, UInt32 nLength, ref UInt32 lpNumberOfEventsRead);
@@ -95,9 +98,9 @@ namespace ConsoleUILib.Internal {
         out uint lpcNumberOfEvents
         );
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetWindowRect(ConsoleHandle hWnd, out RECT lpRect);
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool GetConsoleScreenBufferInfoEx(

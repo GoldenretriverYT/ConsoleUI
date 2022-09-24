@@ -12,10 +12,14 @@ namespace ConsoleUILib
         public static BaseWindow FocusedWindow { get; set; }
         public static ConsoleHandle handle;
         public static CONSOLE_SCREEN_BUFFER_INFO_EX cBuf;
+        public static COORD MousePosition { get; set; }
+        public static bool ClearScreenOnRedraw { get; set; }
 
         public static void Start()
         {
             Console.CursorVisible = false;
+            Console.BufferWidth = Console.WindowWidth;
+            Console.BufferHeight = Console.WindowHeight;
             handle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
 
 
@@ -52,6 +56,8 @@ namespace ConsoleUILib
                             me.Y = record.MouseEvent.dwMousePosition.Y;
                             me.Flags = (MouseFlags)record.MouseEvent.dwEventFlags;
 
+                            MousePosition = new() { X = (short)me.CharX, Y = (short)me.CharY };
+
                             FocusedWindow.HandleMouse(me);
                             break;
 
@@ -65,6 +71,14 @@ namespace ConsoleUILib
                 }
 
                 sw.Restart();
+
+                if (ClearScreenOnRedraw) {
+                    Console.BufferWidth = Console.WindowWidth;
+                    Console.BufferHeight = Console.WindowHeight;
+                    ClearScreenOnRedraw = false;
+                    Console.Clear();
+                }
+
                 RenderWindows();
 
                 foreach(BaseWindow window in Windows) {
@@ -72,18 +86,24 @@ namespace ConsoleUILib
                 }
 
                 Console.Title = "- | Frame Render Time: " + Math.Floor((double)sw.Elapsed.TotalMilliseconds) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / sw.Elapsed.TotalMilliseconds) + " (limited to 30)";
-                Thread.Sleep(1000 / 30);
+                Thread.Sleep(1000 / 60);
             }
         }
 
         private static void RenderWindows() {
             foreach (BaseWindow window in Windows) {
+                window.HandleBeforeDraw();
                 window.DrawWindow();
                 Console.ResetColor();
             }
         }
 
-        public static void ForceRender() {
+        public static void ForceRender(bool redrawEverything = false) {
+            if (redrawEverything) {
+                Console.BufferWidth = Console.WindowWidth;
+                Console.BufferHeight = Console.WindowHeight;
+                Console.Clear();
+            }
             RenderWindows();
         }
 

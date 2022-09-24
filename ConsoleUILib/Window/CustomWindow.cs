@@ -16,6 +16,10 @@ namespace ConsoleUILib.Window
         public int FocusedIndex { get; set; } = -1;
         public InteractableControl? Focused => (FocusedIndex == -1 ? null : Controls[FocusedIndex] as InteractableControl);
 
+        private bool isMouseDown = false;
+        private bool isDragging = false;
+        private short draggingOffset = 0;
+
         public CustomWindow(int x, int y, int w, int h)
         {
             this.Controls = new();
@@ -89,14 +93,43 @@ namespace ConsoleUILib.Window
         public override void HandleMouse(MouseEvent key) {
             base.HandleMouse(key);
 
-            foreach(BaseControl control in Controls) {
-                if (control is not SizedControl iCtrl) continue; // OMG THANKS KNELIS (on SO) FOR THIS KNOWLEDGE
-                
-                if(key.CharX > iCtrl.X && key.CharX < iCtrl.X + iCtrl.GetSize().X &&
-                    key.CharY > iCtrl.Y && key.CharY < iCtrl.Y + iCtrl.GetSize().Y)
-                {
-                    iCtrl.OnPressed();
+            if (key.State.HasFlag(MouseState.LMB)) {
+                isMouseDown = true;
+
+                if(key.CharX >= X && key.CharX < X+Width &&
+                    key.CharY >= Y && key.CharY < Y+1 ) {
+                    if(!isDragging) draggingOffset = (short)(key.CharX - X);
+                    isDragging = true;
                 }
+
+                if (isDragging) return;
+
+                foreach (BaseControl control in Controls) {
+                    if (control is not SizedControl iCtrl) continue; // OMG THANKS KNELIS (on SO) FOR THIS KNOWLEDGE
+
+                    if (key.CharX >= iCtrl.ActualX && key.CharX < (iCtrl.ActualX + iCtrl.GetSize().X) &&
+                        key.CharY >= iCtrl.ActualY && key.CharY < (iCtrl.ActualY + iCtrl.GetSize().Y)) {
+                        iCtrl.OnPressed();
+                    }
+                }
+            }else if(isMouseDown) {
+                isMouseDown = false;
+            }
+        }
+
+        public override void HandleRenderDone() {
+            base.HandleRenderDone();
+
+            
+        }
+
+        public override void HandleBeforeDraw() {
+            if (isDragging && isMouseDown) {
+                X = Math.Clamp(UIManager.MousePosition.X - draggingOffset, 0, Console.WindowWidth - Width);
+                Y = Math.Clamp(UIManager.MousePosition.Y, 0, Console.WindowHeight - Height);
+                UIManager.ClearScreenOnRedraw = true;
+            } else {
+                isDragging = false;
             }
         }
     }

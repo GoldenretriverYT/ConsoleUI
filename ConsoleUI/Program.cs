@@ -2,14 +2,14 @@
 using ConsoleUILib.Controls;
 using ConsoleUILib.Window;
 
-CustomWindow amogus = new CustomWindow(2, 2, 20, 15);
+CustomWindow amogus = new CustomWindow(2, 0, 20, 30);
 amogus.Title = "Text Align Test";
 amogus.RenderDone += (object sender, EventArgs e) => {
     amogus.Title = "Render at " + DateTimeOffset.Now.Hour.ToString("00") + ":" + DateTimeOffset.Now.Minute.ToString("00") + ":" + DateTimeOffset.Now.Second.ToString("00");
 };
 
 Button leftButton = new Button(amogus, 5, 2, 10, 2);
-leftButton.Text = "left";
+leftButton.Text = "dfsdfdfdsfsdfdf";
 leftButton.HorizontalAlign = HAlign.LEFT;
 leftButton.PressAnimation = ButtonPressAnimation.POP_OUT;
 leftButton.Pressed += (object sender, EventArgs e) => {

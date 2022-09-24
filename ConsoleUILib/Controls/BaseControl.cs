@@ -12,8 +12,8 @@ namespace ConsoleUILib.Controls
         public int X { get; set; }
         public int Y { get; set; }
 
-        protected int ActualX => X + ParentWindow.X;
-        protected int ActualY => Y + ParentWindow.Y;
+        public int ActualX => X + ParentWindow.X;
+        public int ActualY => Y + ParentWindow.Y;
 
         public BaseWindow ParentWindow { get; set; }
 

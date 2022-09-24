@@ -18,6 +18,7 @@ namespace ConsoleUILib.Window
         public string Title { get; set; }
 
         public event EventHandler RenderDone;
+        public event EventHandler BeforeDraw;
 
         public virtual void DrawWindow()
         {
@@ -26,7 +27,7 @@ namespace ConsoleUILib.Window
                 throw new DrawException(this, "Width or height is below 1");
             }
 
-            if (X + Width > 100 || Y + Height > 100)
+            if (X + Width > Console.WindowWidth || Y + Height > Console.WindowHeight)
             {
                 throw new DrawException(this, "The size and position would render out of bounds.");
             }else
@@ -35,7 +36,7 @@ namespace ConsoleUILib.Window
                 if (Console.WindowHeight < Y + Height) Console.WindowHeight = Y + Height;
             }
 
-            ConsoleCanvas.DrawRect(X, Y, Width, Height, Color.Gray);
+            ConsoleCanvas.DrawRectGradient(X, Y, Width, Height, Orientation.VERTICAL, Color.Red, Color.Blue);
             ConsoleCanvas.DrawRect(X, Y, Width, 1, Color.DarkGray);
             ConsoleCanvas.DrawString(Title, X, Y, Width, 1, Color.White, Color.DarkGray);
         }
@@ -50,6 +51,11 @@ namespace ConsoleUILib.Window
 
         public virtual void HandleRenderDone() {
             EventHandler ev = RenderDone;
+            ev?.Invoke(this, new());
+        }
+
+        public virtual void HandleBeforeDraw() {
+            EventHandler ev = BeforeDraw;
             ev?.Invoke(this, new());
         }
     }
