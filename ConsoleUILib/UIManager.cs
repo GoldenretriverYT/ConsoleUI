@@ -79,6 +79,7 @@ namespace ConsoleUILib
                     Console.BufferWidth = Console.WindowWidth;
                     Console.BufferHeight = Console.WindowHeight;
                     ClearScreenOnRedraw = false;
+                    Console.ResetColor();
                     Console.Clear();
                 }
 
@@ -105,6 +106,7 @@ namespace ConsoleUILib
             if (redrawEverything) {
                 Console.BufferWidth = Console.WindowWidth;
                 Console.BufferHeight = Console.WindowHeight;
+                Console.ResetColor();
                 Console.Clear();
             }
             RenderWindows();

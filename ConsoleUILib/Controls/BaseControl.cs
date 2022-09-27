@@ -13,7 +13,7 @@ namespace ConsoleUILib.Controls
         public int Y { get; set; }
 
         public int ActualX => X + ParentWindow.X;
-        public int ActualY => Y + ParentWindow.Y;
+        public int ActualY => Y + ParentWindow.Y+1;
 
         public BaseWindow ParentWindow { get; set; }
 

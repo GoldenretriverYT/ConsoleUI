@@ -17,6 +17,8 @@ namespace ConsoleUILib.Window
         public int Height { get; set; }
         public string Title { get; set; }
 
+        public Color BackgroundColor { get; set; } = Color.Gray;
+
         public event EventHandler RenderDone;
         public event EventHandler BeforeDraw;
 
@@ -36,7 +38,7 @@ namespace ConsoleUILib.Window
                 if (Console.WindowHeight < Y + Height) Console.WindowHeight = Y + Height;
             }
 
-            ConsoleCanvas.DrawRect(X, Y, Width, Height, Color.Gray);
+            ConsoleCanvas.DrawRect(X, Y, Width, Height, BackgroundColor);
             ConsoleCanvas.DrawRect(X, Y, Width, 1, Color.DarkGray);
             ConsoleCanvas.DrawString(Title, X, Y, Width, 1, Color.White, Color.DarkGray);
         }
