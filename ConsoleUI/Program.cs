@@ -2,7 +2,7 @@
 using ConsoleUILib.Controls;
 using ConsoleUILib.Window;
 
-CustomWindow amogus = new CustomWindow(2, 0, 20, 30);
+CustomWindow amogus = new CustomWindow(2, 0, 20, 11);
 amogus.Title = "Text Align Test";
 amogus.RenderDone += (object sender, EventArgs e) => {
     amogus.Title = "Render at " + DateTimeOffset.Now.Hour.ToString("00") + ":" + DateTimeOffset.Now.Minute.ToString("00") + ":" + DateTimeOffset.Now.Second.ToString("00");

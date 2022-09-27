@@ -22,15 +22,17 @@ namespace ConsoleUILib
             Console.BufferHeight = Console.WindowHeight;
             handle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
 
+            string strCmdText = "/C cls";
+            System.Diagnostics.Process.Start("CMD.exe", strCmdText);
 
-            int mode = 0;
+            uint mode = 0;
             if (!(NativeMethods.GetConsoleMode(handle, ref mode))) { throw new Exception(); }
 
             mode |= NativeMethods.ENABLE_MOUSE_INPUT;
             mode &= ~NativeMethods.ENABLE_QUICK_EDIT_MODE;
             mode |= NativeMethods.ENABLE_EXTENDED_FLAGS;
 
-            if (!(NativeMethods.SetConsoleMode(handle, mode))) { throw new Exception(); ; }
+            if (!(NativeMethods.SetConsoleMode(handle, mode))) { throw new Exception(); }
             Stopwatch sw = new();
 
             RenderWindows();

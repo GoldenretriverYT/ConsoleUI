@@ -11,9 +11,9 @@ namespace ConsoleUILib.Internal {
 
         public const Int32 STD_INPUT_HANDLE = -10;
 
-        public const Int32 ENABLE_MOUSE_INPUT = 0x0010;
-        public const Int32 ENABLE_QUICK_EDIT_MODE = 0x0040;
-        public const Int32 ENABLE_EXTENDED_FLAGS = 0x0080;
+        public const uint ENABLE_MOUSE_INPUT = 0x0010;
+        public const uint ENABLE_QUICK_EDIT_MODE = 0x0040;
+        public const uint ENABLE_EXTENDED_FLAGS = 0x0080;
 
         public const Int32 KEY_EVENT = 1;
         public const Int32 MOUSE_EVENT = 2;
@@ -76,7 +76,7 @@ namespace ConsoleUILib.Internal {
 
         [DllImportAttribute("kernel32.dll", SetLastError = true)]
         [return: MarshalAsAttribute(UnmanagedType.Bool)]
-        public static extern Boolean GetConsoleMode(ConsoleHandle hConsoleHandle, ref Int32 lpMode);
+        public static extern Boolean GetConsoleMode(ConsoleHandle hConsoleHandle, ref uint lpMode);
 
         [DllImportAttribute("kernel32.dll", SetLastError = true)]
         public static extern ConsoleHandle GetStdHandle(Int32 nStdHandle);
@@ -90,7 +90,7 @@ namespace ConsoleUILib.Internal {
 
         [DllImportAttribute("kernel32.dll", SetLastError = true)]
         [return: MarshalAsAttribute(UnmanagedType.Bool)]
-        public static extern Boolean SetConsoleMode(ConsoleHandle hConsoleHandle, Int32 dwMode);
+        public static extern Boolean SetConsoleMode(ConsoleHandle hConsoleHandle, uint dwMode);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool GetNumberOfConsoleInputEvents(
