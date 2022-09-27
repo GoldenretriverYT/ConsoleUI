@@ -87,6 +87,8 @@ namespace ConsoleUILib.Window
                 return;
             }
 
+            Console.WriteLine(Focused);
+
             Focused?.OnKeyDown(key);
         }
 
@@ -110,6 +112,8 @@ namespace ConsoleUILib.Window
                     if (key.CharX >= iCtrl.ActualX && key.CharX < (iCtrl.ActualX + iCtrl.GetSize().X) &&
                         key.CharY >= iCtrl.ActualY && key.CharY < (iCtrl.ActualY + iCtrl.GetSize().Y)) {
                         iCtrl.OnPressed();
+
+                        //FocusedIndex = Controls.IndexOf(iCtrl);
                     }
                 }
             }else if(isMouseDown) {

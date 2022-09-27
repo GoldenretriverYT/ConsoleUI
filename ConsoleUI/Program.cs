@@ -27,14 +27,14 @@ centerButton.Pressed += (object sender, EventArgs e) => {
 
 amogus.AddControl(centerButton);
 
-Button rightButton = new Button(amogus, 5, 8, 10, 2);
-rightButton.Text = "right";
-rightButton.HorizontalAlign = HAlign.RIGHT;
-rightButton.Pressed += (object sender, EventArgs e) => {
-    (sender as Button).Text = "Pressed!";
+TextField field = new TextField(amogus, 5, 8, 10, 2);
+field.Text = "right";
+field.HorizontalAlign = HAlign.LEFT;
+field.Pressed += (object sender, EventArgs e) => {
+    
 };
 
-amogus.AddControl(rightButton);
+amogus.AddControl(field);
 
 UIManager.AddWindow(amogus);
 UIManager.Start();

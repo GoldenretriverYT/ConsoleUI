@@ -23,9 +23,9 @@ namespace ConsoleUILib
             handle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
 
             string strCmdText = "/C cls";
-            System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+            System.Diagnostics.Process.Start("CMD.exe", strCmdText).WaitForExit();
 
-            uint mode = 0;
+            int mode = 0;
             if (!(NativeMethods.GetConsoleMode(handle, ref mode))) { throw new Exception(); }
 
             mode |= NativeMethods.ENABLE_MOUSE_INPUT;
