@@ -16,9 +16,17 @@ namespace ConsoleUI
     {
         public static void Start()
         {
-            Alert alertWindow = new("Confirmation", "Are you sure?", AlertButtons.YES_NO);
+            Alert.ShowAlert("WARNING", "This will delete System32!", AlertButtons.OK_CANCEL, (AlertResult res) =>
+            {
+                if(res == AlertResult.OK)
+                {
+                    Alert.ShowAlert("lolz", "Not actually dumbo!", AlertButtons.OK, (AlertResult res) => { });
+                }else
+                {
+                    Alert.ShowAlert("Cancelled", "Action cancelled successfully.", AlertButtons.OK, (AlertResult res) => { });
+                }
+            });
 
-            UIManager.AddWindow(alertWindow);
             UIManager.Start();
         }
     }

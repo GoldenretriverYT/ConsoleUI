@@ -14,7 +14,7 @@ namespace ConsoleUILib.Window.Special
         private Button buttonTwo;
         private AlertButtons buttons;
 
-        public AlertResult Result { get; set; } = null;
+        public AlertResult? Result { get; set; } = null;
 
         public Alert(string title, string text, AlertButtons btns) : base((int)((Console.WindowWidth - (Console.WindowWidth * 0.5)) / 2), (Console.WindowHeight - 5) / 2, (int)(Console.WindowWidth * 0.5), 5)
         {
@@ -46,9 +46,21 @@ namespace ConsoleUILib.Window.Special
             }
         }
 
-        public static AlertResult ShowAlert(string title, string text, AlertButtons btns)
+        public static void ShowAlert(string title, string text, AlertButtons btns, Action<AlertResult> callback)
         {
-            var alert = new(title, text, btns);
+            var alert = new Alert(title, text, btns);
+            UIManager.AddWindow(alert);
+
+            new Thread(() =>
+            {
+                while (alert.Result == null)
+                {
+                    Thread.Sleep(10);
+                }
+
+                callback(alert.Result.Value);
+                UIManager.RemoveWindow(alert);
+            }).Start();
         }
     }
 

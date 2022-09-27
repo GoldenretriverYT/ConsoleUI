@@ -9,6 +9,7 @@ namespace ConsoleUILib
     public class UIManager
     {
         private static List<BaseWindow> Windows { get; } = new();
+        private static List<BaseWindow> pendingWindowRemovals = new();
         public static BaseWindow FocusedWindow { get; set; }
         public static ConsoleHandle handle;
         public static CONSOLE_SCREEN_BUFFER_INFO_EX cBuf;
@@ -60,13 +61,33 @@ namespace ConsoleUILib
 
                             MousePosition = new() { X = (short)me.CharX, Y = (short)me.CharY };
 
-                            FocusedWindow.HandleMouse(me);
+                            if (me.State.HasFlag(MouseState.LMB))
+                            {
+                                foreach (BaseWindow window in Windows)
+                                {
+                                    if (MousePosition.X > window.X && MousePosition.X < window.X + window.Width &&
+                                        MousePosition.Y > window.Y && MousePosition.Y < window.Y + window.Height)
+                                    {
+                                        if (FocusedWindow is CustomWindow cwin)
+                                        {
+                                            if (cwin.Focused != null) cwin.Focused.IsSelected = false;
+                                            cwin.FocusedIndex = -1;
+                                        }
+
+                                        FocusedWindow = window;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if(FocusedWindow is not null) FocusedWindow.HandleMouse(me);
+
                             break;
 
                         case NativeMethods.KEY_EVENT: 
                             NativeMethods.ControlKeyState cks = (NativeMethods.ControlKeyState)record.KeyEvent.dwControlKeyState;
                             ConsoleKeyInfo cki = new(record.KeyEvent.UnicodeChar, (ConsoleKey)record.KeyEvent.wVirtualKeyCode, cks.HasFlag(NativeMethods.ControlKeyState.SHIFT_PRESSED), cks.HasFlag(NativeMethods.ControlKeyState.LEFT_ALT_PRESSED) || cks.HasFlag(NativeMethods.ControlKeyState.RIGHT_ALT_PRESSED), cks.HasFlag(NativeMethods.ControlKeyState.LEFT_CTRL_PRESSED) || cks.HasFlag(NativeMethods.ControlKeyState.RIGHT_CTRL_PRESSED));
-                            if(record.KeyEvent.bKeyDown == true) FocusedWindow.HandleKeyDown(cki);
+                            if(record.KeyEvent.bKeyDown == true) if (FocusedWindow is not null) FocusedWindow.HandleKeyDown(cki);
                             break;
                         default: break;
                     }
@@ -95,6 +116,15 @@ namespace ConsoleUILib
         }
 
         private static void RenderWindows() {
+            foreach(BaseWindow window in pendingWindowRemovals)
+            {
+                if (FocusedWindow == window) FocusedWindow = null;
+                Windows.Remove(window);
+                ClearScreenOnRedraw = true;
+            }
+
+            pendingWindowRemovals.Clear();
+
             foreach (BaseWindow window in Windows) {
                 window.HandleBeforeDraw();
                 window.DrawWindow();
@@ -115,6 +145,11 @@ namespace ConsoleUILib
         public static void AddWindow(BaseWindow window) {
             Windows.Add(window);
             FocusedWindow = window;
+        }
+        
+        public static void RemoveWindow(BaseWindow window)
+        {
+            pendingWindowRemovals.Add(window);
         }
     }
 }
