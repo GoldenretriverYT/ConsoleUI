@@ -65,8 +65,7 @@ namespace ConsoleUILib.Controls {
         {
             base.OnKeyDown(key);
 
-
-            Console.WriteLine(IsSelected + " " + key.KeyChar);
+            Debug.WriteLine(IsSelected + " " + key.KeyChar);
             if(IsSelected && char.IsAscii(key.KeyChar))
             {
                 Text += key.KeyChar;

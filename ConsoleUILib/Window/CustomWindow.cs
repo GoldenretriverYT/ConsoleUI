@@ -87,8 +87,7 @@ namespace ConsoleUILib.Window
                 return;
             }
 
-            Console.WriteLine(Focused);
-
+            Debug.WriteLine("Calling OnKeyDown for " + Focused);
             Focused?.OnKeyDown(key);
         }
 
@@ -113,7 +112,9 @@ namespace ConsoleUILib.Window
                         key.CharY >= iCtrl.ActualY && key.CharY < (iCtrl.ActualY + iCtrl.GetSize().Y)) {
                         iCtrl.OnPressed();
 
-                        //FocusedIndex = Controls.IndexOf(iCtrl);
+                        if(Focused != null) Focused.IsSelected = false;
+                        FocusedIndex = Controls.IndexOf(iCtrl);
+                        Focused.IsSelected = true;
                     }
                 }
             }else if(isMouseDown) {
