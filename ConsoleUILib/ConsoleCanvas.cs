@@ -64,13 +64,24 @@ namespace ConsoleUILib
             }
         }
 
-        public static void DrawString(string str, int x, int y, Color fore, Color back) {
-            DrawString(str, x, y, 1000, 1000, fore, back);
+        public static OverflowState DrawString(string str, int x, int y, Color fore, Color back) {
+            return DrawString(str, x, y, 1000, 1000, fore, back);
         }
 
-        public static void DrawString(string str, int x, int y, int w, int h, Color fore, Color back, int lineScrollText = 0) {
+        public static void DrawStringWithoutBoundsCheck(string str, int x, int y, Color fore, Color back)
+        {
+            Console.ResetColor();
+            SetForegroundColor(fore);
+            SetBackgroundColor(back);
+
+            Console.SetCursorPosition(x, y);
+            Console.Write(str);
+        }
+
+        public static OverflowState DrawString(string str, int x, int y, int w, int h, Color fore, Color back, int lineScrollText = 0) {
             List<string> tempLines = str.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).ToList();
             List<string> lines = new();
+            OverflowState state = OverflowState.NONE;
 
             Console.ResetColor();
             SetForegroundColor(fore);
@@ -83,6 +94,8 @@ namespace ConsoleUILib
                     while (wadd < line.Length - w) {
                         lines.Add(line.Substring(wadd, w));
                         wadd += w;
+                        state = OverflowState.HORIZONTAL;
+
                     }
                 } else {
                     lines.Add(line);
@@ -98,8 +111,14 @@ namespace ConsoleUILib
 
                 off++;
 
-                if (off >= h) break;
+                if (off >= h)
+                {
+                    if(lines.Count > h) state = state == OverflowState.HORIZONTAL ? OverflowState.BOTH : OverflowState.VERTICAL;
+                    break;
+                }
             }
+
+            return state;
         }
 
         public static void SetForegroundColor(Color clr) {

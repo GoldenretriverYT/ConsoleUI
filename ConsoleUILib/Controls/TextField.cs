@@ -22,6 +22,8 @@ namespace ConsoleUILib.Controls {
         public HAlign HorizontalAlign = HAlign.LEFT;
         public VAlign VerticalAlign = VAlign.TOP;
 
+        public OverflowState OverflowState { get; private set; } = OverflowState.NONE;
+
         public EventHandler Pressed;
 
         public override bool EnterShouldPress => false;
@@ -37,11 +39,6 @@ namespace ConsoleUILib.Controls {
         }
 
         public override void DrawControl() {
-            if(W < 2 || H < 2)
-            {
-                throw new Exception("Text fields must be at least 2x2");
-            }
-
             int xOffset = 0;
             int yOffset = 0;
 
@@ -62,7 +59,8 @@ namespace ConsoleUILib.Controls {
             if (Cursor > Text.Length) Cursor = Text.Length;
 
             ConsoleCanvas.DrawRect(ActualX, ActualY, W, H, IsSelected ? FocusedColor : RegularColor);
-            ConsoleCanvas.DrawString(GetBlinkText(), ActualX + xOffset, ActualY + yOffset, W, H, TextColor, IsSelected ? FocusedColor : RegularColor);
+
+            OverflowState = ConsoleCanvas.DrawString(GetBlinkText(), ActualX + xOffset, ActualY + yOffset, W, H, TextColor, IsSelected ? FocusedColor : RegularColor);
         }
 
         public string GetBlinkText()

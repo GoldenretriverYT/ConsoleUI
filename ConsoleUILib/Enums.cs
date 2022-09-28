@@ -10,6 +10,14 @@ namespace ConsoleUILib {
         VERTICAL
     }
 
+    public enum OverflowState
+    {
+        HORIZONTAL,
+        VERTICAL,
+        BOTH,
+        NONE,
+    }
+
     public enum HAlign {
         LEFT,
         MIDDLE,
