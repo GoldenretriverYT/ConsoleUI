@@ -38,7 +38,7 @@ namespace ConsoleUILib.Window
                 if (Console.WindowHeight < Y + Height) Console.WindowHeight = Y + Height;
             }
 
-            ConsoleCanvas.DrawRectGradient(X, Y, Width, Height, Orientation.VERTICAL, Color.Red, Color.Yellow);
+            ConsoleCanvas.DrawRect(X, Y, Width, Height, Color.Gray);
             ConsoleCanvas.DrawRect(X, Y, Width, 1, Color.DarkGray);
             ConsoleCanvas.DrawString(Title, X, Y, Width, 1, Color.White, Color.DarkGray);
         }

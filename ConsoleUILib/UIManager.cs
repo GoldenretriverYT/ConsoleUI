@@ -17,6 +17,8 @@ namespace ConsoleUILib
         public static bool ClearScreenOnRedraw { get; set; }
         public static bool AllowChangeFocusedWindow { get; set; } = true;
 
+        public static List<double> Frametimes { get; set; } = new();
+
         public static void Start()
         {
             Console.CursorVisible = false;
@@ -41,6 +43,8 @@ namespace ConsoleUILib
 
             while(true)
             {
+                sw.Restart();
+
                 Console.ResetColor();
 
                 NativeMethods.GetNumberOfConsoleInputEvents(handle, out uint eventsAvailable);
@@ -97,8 +101,6 @@ namespace ConsoleUILib
 
                 }
 
-                sw.Restart();
-
                 if (ClearScreenOnRedraw) {
                     Console.BufferWidth = Console.WindowWidth;
                     Console.BufferHeight = Console.WindowHeight;
@@ -113,7 +115,13 @@ namespace ConsoleUILib
                     window.HandleRenderDone();
                 }
 
-                Console.Title = "- | Frame Render Time: " + Math.Floor((double)sw.Elapsed.TotalMilliseconds) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / sw.Elapsed.TotalMilliseconds) + " (limited to 30)";
+                if (Frametimes.Count > 15) Frametimes.RemoveAt(0);
+                Frametimes.Add(sw.Elapsed.TotalMilliseconds);
+
+                double sum = 0;
+                foreach(double ms in Frametimes) sum += ms;
+
+                Console.Title = "- | Frame Render Time: " + Math.Floor(sum/Frametimes.Count) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / (sum / Frametimes.Count)) + " (capped at 30)";
                 Thread.Sleep(1000 / 60);
             }
         }

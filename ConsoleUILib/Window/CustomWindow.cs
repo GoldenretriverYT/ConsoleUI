@@ -37,7 +37,7 @@ namespace ConsoleUILib.Window
         public override void DrawWindow() {
             base.DrawWindow();
 
-            foreach(BaseControl ctrl in Controls) {
+            foreach(BaseControl ctrl in Controls.ToArray()) {
                 ctrl.DrawControl();
             }
         }
@@ -106,7 +106,7 @@ namespace ConsoleUILib.Window
 
                 if (isDragging) return;
 
-                foreach (BaseControl control in Controls) {
+                foreach (BaseControl control in Controls.ToArray()) { // Copy the list so we can modify it whilst rendering
                     if (control is not SizedControl iCtrl) continue; // OMG THANKS KNELIS (on SO) FOR THIS KNOWLEDGE
 
                     if (key.CharX >= iCtrl.ActualX && key.CharX < (iCtrl.ActualX + iCtrl.GetSize().X) &&

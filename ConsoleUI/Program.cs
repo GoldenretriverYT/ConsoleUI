@@ -10,7 +10,7 @@ namespace ConsoleUI
     {
         public static void Main(string[] args)
         {
-            TestMultipleWin.Start();
+            TestDynamicContent.Start();
         }
     }
 }
