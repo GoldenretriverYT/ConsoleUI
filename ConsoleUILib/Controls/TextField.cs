@@ -37,6 +37,11 @@ namespace ConsoleUILib.Controls {
         }
 
         public override void DrawControl() {
+            if(W < 2 || H < 2)
+            {
+                throw new Exception("Text fields must be at least 2x2");
+            }
+
             int xOffset = 0;
             int yOffset = 0;
 

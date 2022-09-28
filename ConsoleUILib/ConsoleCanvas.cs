@@ -50,13 +50,17 @@ namespace ConsoleUILib
             Console.ResetColor();
             List<Color> gradient = GetGradients(start, end, w).ToList();
 
+
+            string line = "";
+
+            for (int xOff = 0; xOff < w; xOff++)
+            {
+                line += GetBackgroundColorString(gradient[xOff]) + " ";
+            }
+
             for (int yT = y; yT < y + h; yT++) {
                 Console.SetCursorPosition(x, yT);
-
-                for(int xOff = 0; xOff < w; xOff++) {
-                    SetBackgroundColor(gradient[xOff]);
-                    Console.Write(" ");
-                }
+                Console.Write(line);
             }
         }
 
@@ -104,6 +108,11 @@ namespace ConsoleUILib
 
         public static void SetBackgroundColor(Color clr) {
             Console.Write("\x1b[48;2;" + clr.R + ";" + clr.G + ";" + clr.B + "m");
+        }
+
+        public static string GetBackgroundColorString(Color clr)
+        {
+            return "\x1b[48;2;" + clr.R + ";" + clr.G + ";" + clr.B + "m";
         }
 
         public static IEnumerable<Color> GetGradients(Color start, Color end, int steps) {
