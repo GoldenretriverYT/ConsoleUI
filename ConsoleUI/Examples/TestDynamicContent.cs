@@ -15,7 +15,7 @@ namespace ConsoleUI
         public static Random rnd = new();
         public static void Start()
         {
-            window = new CustomWindow(0, 0, Console.WindowWidth, Console.WindowHeight);
+            window = new CustomWindow(0, 0, 4, 4);
             window.Title = "Dynamic Content Test";
 
             CreateNewButton();
@@ -26,7 +26,7 @@ namespace ConsoleUI
 
         public static void CreateNewButton()
         {
-            Button btn = new Button(window, rnd.Next(Console.WindowWidth-1), rnd.Next(Console.WindowHeight-1), 1, 1);
+            Button btn = new Button(window, rnd.Next(window.Width-1), rnd.Next(window.Height-1), 1, 1);
             btn.Text = "Create new";
             btn.HorizontalAlign = HAlign.LEFT;
             btn.PressAnimation = ButtonPressAnimation.SWITCH_COLOR;

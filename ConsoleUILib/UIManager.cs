@@ -10,15 +10,57 @@ namespace ConsoleUILib
     {
         private static List<BaseWindow> Windows { get; } = new();
         private static List<BaseWindow> pendingWindowRemovals = new();
-        public static BaseWindow FocusedWindow { get; set; }
-        public static ConsoleHandle handle;
-        public static CONSOLE_SCREEN_BUFFER_INFO_EX cBuf;
+
+        private static ConsoleHandle handle;
+        private static CONSOLE_SCREEN_BUFFER_INFO_EX cBuf;
+
+        /// <summary>
+        /// Current mouse cursor position in character coordinates
+        /// </summary>
         public static COORD MousePosition { get; set; }
+
+        /// <summary>
+        /// The currently focused window. Window focus changes when the users clicks the window.
+        /// </summary>
+        public static BaseWindow FocusedWindow { get; set; }
+
+        // Flags for UI Manager
+        /// <summary>
+        /// If set to true, it will clear the screen before rendering the next frame.
+        /// It is automatically set to false after that.
+        /// </summary>
         public static bool ClearScreenOnRedraw { get; set; }
+
+        /// <summary>
+        /// If set to true, the windows focus can change by using the cursor.
+        /// </summary>
         public static bool AllowChangeFocusedWindow { get; set; } = true;
 
-        public static List<double> Frametimes { get; set; } = new();
 
+        // All stuff related to framerate
+        /// <summary>
+        /// Contains the render times of the last <see cref="FrameTimesHistoryLength"/> frames
+        /// </summary>
+        public static List<double> FrameTimes { get; set; } = new();
+
+        /// <summary>
+        /// Defines how many frames should be kept in <see cref="FrameTimes"/> list.
+        /// Reducing whilst running will not actually get rid of the excess entries,
+        /// you will have to clear the list for that
+        /// </summary>
+        public static int FrameTimesHistoryLength { get; set; } = 15;
+
+        /// <summary>
+        /// Sets the max frame rate. Increasing it too high will cause flickering.
+        /// </summary>
+        public static int MaxFrameRate { get; set; } = 30;
+
+
+
+        /// <summary>
+        /// Start the UIManager rendering & input thread
+        /// </summary>
+        /// <exception cref="Exception">Unexpected error, possibly on wrong platform</exception>
         public static void Start()
         {
             Console.CursorVisible = false;
@@ -115,14 +157,14 @@ namespace ConsoleUILib
                     window.HandleRenderDone();
                 }
 
-                if (Frametimes.Count > 15) Frametimes.RemoveAt(0);
-                Frametimes.Add(sw.Elapsed.TotalMilliseconds);
+                if (FrameTimes.Count > FrameTimesHistoryLength) FrameTimes.RemoveAt(0);
+                FrameTimes.Add(sw.Elapsed.TotalMilliseconds);
 
                 double sum = 0;
-                foreach(double ms in Frametimes) sum += ms;
+                foreach(double ms in FrameTimes) sum += ms;
 
-                Console.Title = "- | Frame Render Time: " + Math.Floor(sum/Frametimes.Count) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / (sum / Frametimes.Count)) + " (capped at 30)";
-                Thread.Sleep(1000 / 60);
+                Console.Title = "- | Avg Render Time (last 15 frames): " + Math.Floor(sum/FrameTimes.Count) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / (sum / FrameTimes.Count)) + " (capped at " + MaxFrameRate + ") | Actual FPS: " + Math.Min(MaxFrameRate, Math.Floor(1000d / (sum / FrameTimes.Count)));
+                Thread.Sleep(1000 / MaxFrameRate);
             }
         }
 
@@ -143,6 +185,10 @@ namespace ConsoleUILib
             }
         }
 
+        /// <summary>
+        /// Will force an immediate re-render of all windows
+        /// </summary>
+        /// <param name="redrawEverything">If true, it will clear the screen before drawing.</param>
         public static void ForceRender(bool redrawEverything = false) {
             if (redrawEverything) {
                 Console.BufferWidth = Console.WindowWidth;
@@ -153,11 +199,21 @@ namespace ConsoleUILib
             RenderWindows();
         }
 
+
+        /// <summary>
+        /// Add a window to the UIManager.
+        /// It will not be drawn until added using this method
+        /// </summary>
+        /// <param name="window">The window to add</param>
         public static void AddWindow(BaseWindow window) {
             Windows.Add(window);
             FocusedWindow = window;
         }
         
+        /// <summary>
+        /// Remove a window from the UIManager.
+        /// </summary>
+        /// <param name="window">The window to remove</param>
         public static void RemoveWindow(BaseWindow window)
         {
             pendingWindowRemovals.Add(window);
