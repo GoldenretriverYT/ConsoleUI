@@ -12,6 +12,9 @@ namespace ConsoleUILib.Window
 {
     public class CustomWindow : BaseWindow
     {
+        /// <summary>
+        /// List of controls. However, it is recommended to use <see cref="AddControl(BaseControl)"/> instead.
+        /// </summary>
         public List<BaseControl> Controls { get; init; }
         public int FocusedIndex { get; set; } = -1;
         public InteractableControl? Focused => (FocusedIndex == -1 ? null : Controls[FocusedIndex] as InteractableControl);
