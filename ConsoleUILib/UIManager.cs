@@ -113,7 +113,6 @@ namespace ConsoleUILib
                     window.HandleRenderDone();
                 }
 
-                ConsoleCanvas.Console.Draw();
                 Console.Title = "- | Frame Render Time: " + Math.Floor((double)sw.Elapsed.TotalMilliseconds) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / sw.Elapsed.TotalMilliseconds) + " (limited to 30)";
                 Thread.Sleep(1000 / 60);
             }
