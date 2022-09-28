@@ -101,6 +101,7 @@ namespace ConsoleUILib.Window
                     key.CharY >= Y && key.CharY < Y+1 ) {
                     if(!isDragging) draggingOffset = (short)(key.CharX - X);
                     isDragging = true;
+                    UIManager.AllowChangeFocusedWindow = false;
                 }
 
                 if (isDragging) return;
@@ -129,12 +130,19 @@ namespace ConsoleUILib.Window
         }
 
         public override void HandleBeforeDraw() {
-            if (isDragging && isMouseDown) {
-                X = Math.Clamp(UIManager.MousePosition.X - draggingOffset, 0, Console.WindowWidth - Width);
-                Y = Math.Clamp(UIManager.MousePosition.Y, 0, Console.WindowHeight - Height);
-                UIManager.ClearScreenOnRedraw = true;
-            } else {
-                isDragging = false;
+            if (isDragging)
+            {
+                if (isMouseDown)
+                {
+                    X = Math.Clamp(UIManager.MousePosition.X - draggingOffset, 0, Console.WindowWidth - Width);
+                    Y = Math.Clamp(UIManager.MousePosition.Y, 0, Console.WindowHeight - Height);
+                    UIManager.ClearScreenOnRedraw = true;
+                }
+                else
+                {
+                    isDragging = false;
+                    UIManager.AllowChangeFocusedWindow = true;
+                }
             }
         }
     }

@@ -15,6 +15,7 @@ namespace ConsoleUILib
         public static CONSOLE_SCREEN_BUFFER_INFO_EX cBuf;
         public static COORD MousePosition { get; set; }
         public static bool ClearScreenOnRedraw { get; set; }
+        public static bool AllowChangeFocusedWindow { get; set; } = true;
 
         public static void Start()
         {
@@ -61,12 +62,12 @@ namespace ConsoleUILib
 
                             MousePosition = new() { X = (short)me.CharX, Y = (short)me.CharY };
 
-                            if (me.State.HasFlag(MouseState.LMB))
-                            {
-                                foreach (BaseWindow window in Windows)
+                            if (me.State.HasFlag(MouseState.LMB) && AllowChangeFocusedWindow) // Left mouse button most be pressed. Also make sure that
+                            {                                                                 // you can not drag more than one window by only allowing
+                                foreach (BaseWindow window in Windows)                        // changing focused window when no window is being dragged
                                 {
                                     if (MousePosition.X > window.X && MousePosition.X < window.X + window.Width &&
-                                        MousePosition.Y > window.Y && MousePosition.Y < window.Y + window.Height)
+                                        MousePosition.Y >= window.Y && MousePosition.Y < window.Y + window.Height)
                                     {
                                         if (FocusedWindow is CustomWindow cwin)
                                         {
@@ -75,6 +76,8 @@ namespace ConsoleUILib
                                         }
 
                                         FocusedWindow = window;
+                                        Windows.Remove(window);
+                                        Windows.Add(window);
                                         break;
                                     }
                                 }
@@ -110,8 +113,9 @@ namespace ConsoleUILib
                     window.HandleRenderDone();
                 }
 
+                ConsoleCanvas.Console.Draw();
                 Console.Title = "- | Frame Render Time: " + Math.Floor((double)sw.Elapsed.TotalMilliseconds) + "ms | Theoretical possible FPS: " + Math.Floor(1000d / sw.Elapsed.TotalMilliseconds) + " (limited to 30)";
-                Thread.Sleep(1000 / 30);
+                Thread.Sleep(1000 / 60);
             }
         }
 

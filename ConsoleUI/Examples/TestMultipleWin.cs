@@ -9,7 +9,7 @@ using ConsoleUILib.Window;
 namespace ConsoleUI
 {
     /// <summary>
-    /// Basic test with multiple windows. Has 3x 2 buttons and 1 text field
+    /// Basic test with multiple windows. Has 2x 2 buttons and 1 text field
     /// </summary>
     internal class TestMultipleWin
     {
@@ -17,7 +17,6 @@ namespace ConsoleUI
         {
             CreateWindow(10);
             CreateWindow(30);
-            CreateWindow(50);
             UIManager.Start();
         }
 
