@@ -9,21 +9,62 @@ using System.Threading.Tasks;
 
 namespace ConsoleUILib.Controls {
     public class TextField : SizedControl {
+        /// <summary>
+        /// Width of element
+        /// </summary>
         public int W { get; set; }
+        /// <summary>
+        /// Height of element
+        /// </summary>
         public int H { get; set; }
 
+        /// <summary>
+        /// The color of the text field when <see cref="InteractableControl.IsSelected"/> is true
+        /// </summary>
         public Color FocusedColor { get; set; } = Color.DimGray;
+
+        /// <summary>
+        /// The color of the text field when its clicked
+        /// </summary>
         public Color PressedColor { get; set; } = Color.FromArgb(26, 26, 26);
+
+        /// <summary>
+        /// The normal background color of the text field
+        /// </summary>
         public Color RegularColor { get; set; } = Color.SlateGray;
+
+        /// <summary>
+        /// The color of the text on the button
+        /// </summary>
         public Color TextColor { get; set; } = Color.White;
+
+        /// <summary>
+        /// The content of the text field
+        /// </summary>
         public string Text { get; set; } = "TextField";
+        
+        /// <summary>
+        /// The offset of the cursor
+        /// </summary>
         public int Cursor { get; set; } = 0;
 
+        /// <summary>
+        /// Horizontal align of the text
+        /// </summary>
         public HAlign HorizontalAlign = HAlign.LEFT;
+        /// <summary>
+        /// Vertical align of the text
+        /// </summary>
         public VAlign VerticalAlign = VAlign.TOP;
-
+        
+        /// <summary>
+        /// The current state of how the content would overflow
+        /// </summary>
         public OverflowState OverflowState { get; private set; } = OverflowState.NONE;
 
+        /// <summary>
+        /// Called when the text field is clicked
+        /// </summary>
         public EventHandler Pressed;
 
         public override bool EnterShouldPress => false;
@@ -63,6 +104,10 @@ namespace ConsoleUILib.Controls {
             OverflowState = ConsoleCanvas.DrawString(GetBlinkText(), ActualX + xOffset, ActualY + yOffset, W, H, TextColor, IsSelected ? FocusedColor : RegularColor);
         }
 
+        /// <summary>
+        /// Gets the content including the cursor
+        /// </summary>
+        /// <returns></returns>
         public string GetBlinkText()
         {
             if (cursorBlink && IsSelected)
@@ -122,6 +167,10 @@ namespace ConsoleUILib.Controls {
             }
         }
 
+        /// <summary>
+        /// Adds a character at the current cursor position
+        /// </summary>
+        /// <param name="chr">Character to add</param>
         public void AddCharAtCursor(char chr)
         {
             Text = Text.Substring(0, Cursor) + chr + Text.Substring(Cursor, Text.Length - Cursor);
