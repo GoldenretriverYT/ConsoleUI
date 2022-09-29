@@ -9,6 +9,11 @@ namespace ConsoleUILib.Exceptions
 {
     internal class DrawException : Exception
     {
+        /// <summary>
+        /// Gets called when some drawing has gone wrong.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="msg"></param>
         public DrawException(BaseWindow from, string msg) : base("Drawing window " + from.Title + " failed: " + msg)
         {
             

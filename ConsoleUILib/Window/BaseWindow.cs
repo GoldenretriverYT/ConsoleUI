@@ -51,11 +51,17 @@ namespace ConsoleUILib.Window
 
         }
 
+        /// <summary>
+        /// This invokes the <see cref="RenderDone"/> event
+        /// </summary>
         public virtual void HandleRenderDone() {
             EventHandler ev = RenderDone;
             ev?.Invoke(this, new());
         }
 
+        /// <summary>
+        /// This invokes the <see cref="BeforeDraw"/> event
+        /// </summary>
         public virtual void HandleBeforeDraw() {
             EventHandler ev = BeforeDraw;
             ev?.Invoke(this, new());

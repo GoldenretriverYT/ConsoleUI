@@ -13,16 +13,31 @@ namespace ConsoleUILib.Window
     public class CustomWindow : BaseWindow
     {
         /// <summary>
-        /// List of controls. However, it is recommended to use <see cref="AddControl(BaseControl)"/> instead.
+        /// List of controls. However, it is recommended to use <see cref="AddControl(BaseControl)"/> to add controls instead.
         /// </summary>
         public List<BaseControl> Controls { get; init; }
+
+        /// <summary>
+        /// The index of the focused element
+        /// </summary>
         public int FocusedIndex { get; set; } = -1;
+
+        /// <summary>
+        /// The focused element. If index is -1, it will return null
+        /// </summary>
         public InteractableControl? Focused => (FocusedIndex == -1 ? null : Controls[FocusedIndex] as InteractableControl);
 
         private bool isMouseDown = false;
         private bool isDragging = false;
         private short draggingOffset = 0;
 
+        /// <summary>
+        /// Create a new window
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
         public CustomWindow(int x, int y, int w, int h)
         {
             this.Controls = new();
@@ -32,11 +47,18 @@ namespace ConsoleUILib.Window
             this.Height = h;
         }
 
+        /// <summary>
+        /// Add a control to the window
+        /// </summary>
+        /// <param name="control">Control to add</param>
         public void AddControl(BaseControl control)
         {
             this.Controls.Add(control);
         }
 
+        /// <summary>
+        /// Draws the window. You might want to use <see cref="UIManager.ForceRender(bool)"/> instead.
+        /// </summary>
         public override void DrawWindow() {
             base.DrawWindow();
 
@@ -45,6 +67,13 @@ namespace ConsoleUILib.Window
             }
         }
 
+        /// <summary>
+        /// This method finds the next interactable element.
+        /// This is primarily used internally
+        /// </summary>
+        /// <param name="lastIdx"></param>
+        /// <param name="outCtrl"></param>
+        /// <param name="outIdx"></param>
         public void FindNextInteractable(int lastIdx, out BaseControl outCtrl, out int outIdx)
         {
             int idx = lastIdx + 1;
@@ -69,6 +98,10 @@ namespace ConsoleUILib.Window
             }
         }
 
+        /// <summary>
+        /// Called when a new KeyEvent is detected. You can call it manually to simulate key presses.
+        /// </summary>
+        /// <param name="key"></param>
         public override void HandleKeyDown(ConsoleKeyInfo key) {
             base.HandleKeyDown(key);
             Debug.WriteLine("Window " + Title + " handling key press " + key.Key.ToString() + " (SHIFT: " + key.Modifiers.HasFlag(ConsoleModifiers.Shift) + ")");
@@ -94,6 +127,10 @@ namespace ConsoleUILib.Window
             Focused?.OnKeyDown(key);
         }
 
+        /// <summary>
+        /// Called when a new MouseEvent is detected. You can call it manually to simulate mouse clicks.
+        /// </summary>
+        /// <param name="key"></param>
         public override void HandleMouse(MouseEvent key) {
             base.HandleMouse(key);
 
@@ -128,8 +165,6 @@ namespace ConsoleUILib.Window
 
         public override void HandleRenderDone() {
             base.HandleRenderDone();
-
-            
         }
 
         public override void HandleBeforeDraw() {

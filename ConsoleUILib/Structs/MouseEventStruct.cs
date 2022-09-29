@@ -9,38 +9,40 @@ using System.Threading.Tasks;
 using static ConsoleUILib.Internal.NativeMethods;
 
 namespace ConsoleUILib.Structs {
+    /// <summary>
+    /// This struct is contained in all mouse events
+    /// </summary>
     public struct MouseEvent {
+        /// <summary>
+        /// The X position of the cursor (in characters)
+        /// </summary>
         public int X { get; set; }
+
+        /// <summary>
+        /// The Y position of the cursor (in characters)
+        /// </summary>
         public int Y { get; set; }
+
+        /// <summary>
+        /// Current mouse buttons pressed
+        /// </summary>
         public MouseState State { get; set; }
+
+        /// <summary>
+        /// Contains flags like DoubleClick
+        /// </summary>
         public MouseFlags Flags { get; set; }
 
-        public int CharX => GetCharX();
-        public int CharY => GetCharY();
-
-        private int GetCharX() {
-            RECT cRect = GetConsoleRect();
-            RECT charRect = GetRectPerChar(cRect);
-
-            return (X);
-        }
-
-        private int GetCharY() {
-            RECT cRect = GetConsoleRect();
-            RECT charRect = GetRectPerChar(cRect);
-
-            return Y;
-        }
-
-        private RECT GetConsoleRect() {
-            IntPtr hndl = Process.GetCurrentProcess().MainWindowHandle;
-            if (!NativeMethods.GetWindowRect(GetConsoleWindow(), out RECT rect)) throw new Exception(Marshal.GetLastWin32Error().ToString());
-            return rect;
-        }
-
-        private RECT GetRectPerChar(RECT rect) {
-            return new RECT() { Top = 0, Left = 0, Bottom = rect.Height / Console.WindowHeight, Right = rect.Width / Console.WindowWidth };
-        }
+        /// <summary>
+        /// Obsolete, use <see cref="X"/> instead
+        /// </summary>
+        [Obsolete("This can be replaced with MouseEvent.X")]
+        public int CharX => X;
+        /// <summary>
+        /// Obsolete, use <see cref="Y"/> instead
+        /// </summary>
+        [Obsolete("This can be replaced with MouseEvent.X")]
+        public int CharY => Y;
     }
 
     [Flags]

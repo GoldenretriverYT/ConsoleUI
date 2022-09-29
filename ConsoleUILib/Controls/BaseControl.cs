@@ -9,12 +9,27 @@ namespace ConsoleUILib.Controls
 {
     public abstract class BaseControl
     {
+        /// <summary>
+        /// X position of the control within the window. For custom controls drawing, use <see cref="ActualX"/>
+        /// </summary>
         public int X { get; set; }
+        /// <summary>
+        /// Y position of the control within the window. For custom controls drawing, use <see cref="ActualY"/>
+        /// </summary>
         public int Y { get; set; }
 
+        /// <summary>
+        /// X position of the control within the whole console
+        /// </summary>
         public int ActualX => X + ParentWindow.X;
+        /// <summary>
+        /// Y position of the control within the whole console
+        /// </summary>
         public int ActualY => Y + ParentWindow.Y+1;
 
+        /// <summary>
+        /// The parent window of the control
+        /// </summary>
         public BaseWindow ParentWindow { get; set; }
 
         public virtual void DrawControl()
