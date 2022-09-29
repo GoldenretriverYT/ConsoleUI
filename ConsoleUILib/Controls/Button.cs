@@ -8,21 +8,61 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleUILib.Controls {
+    /// <summary>
+    /// A button is a clickable element, that triggers an event when clicked.
+    /// </summary>
     public class Button : SizedControl {
+        /// <summary>
+        /// Width of element
+        /// </summary>
         public int W { get; set; }
+        /// <summary>
+        /// Height of element
+        /// </summary>
         public int H { get; set; }
 
+        /// <summary>
+        /// The color of the button when <see cref="InteractableControl.IsSelected"/> is true
+        /// </summary>
         public Color FocusedColor { get; set; } = Color.DimGray;
+
+        /// <summary>
+        /// The color of the button when its clicked (if <see cref="PressAnimation"/> is set to <see cref="ButtonPressAnimation.SWITCH_COLOR"/>
+        /// </summary>
         public Color PressedColor { get; set; } = Color.FromArgb(26, 26, 26);
+
+        /// <summary>
+        /// The normal background color of the button
+        /// </summary>
         public Color RegularColor { get; set; } = Color.SlateGray;
+
+        /// <summary>
+        /// The color of the text on the button
+        /// </summary>
         public Color TextColor { get; set; } = Color.White;
+
+        /// <summary>
+        /// The animation to use when the button gets clicked
+        /// </summary>
         public ButtonPressAnimation PressAnimation { get; set; } = ButtonPressAnimation.SWITCH_COLOR;
 
+        /// <summary>
+        /// The text displayed on the button
+        /// </summary>
         public string Text { get; set; } = "Button";
 
+        /// <summary>
+        /// The horizontal alignment of the text
+        /// </summary>
         public HAlign HorizontalAlign = HAlign.LEFT;
+        /// <summary>
+        /// The vertical alignment of the text
+        /// </summary>
         public VAlign VerticalAlign = VAlign.TOP;
 
+        /// <summary>
+        /// Called when the button gets clicked
+        /// </summary>
         public EventHandler Pressed;
 
         private bool wasJustPressed = false;
