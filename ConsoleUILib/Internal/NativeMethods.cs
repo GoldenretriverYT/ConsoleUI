@@ -107,6 +107,11 @@ namespace ConsoleUILib.Internal {
         ConsoleHandle hConsoleOutput,
         ref CONSOLE_SCREEN_BUFFER_INFO_EX ConsoleScreenBufferInfo
         );
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetConsoleCP(
+        uint wCodePageID
+        );
     }
 
     public class ConsoleHandle : SafeHandleMinusOneIsInvalid {

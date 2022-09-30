@@ -104,7 +104,7 @@ namespace ConsoleUILib.Window
         /// <param name="key"></param>
         public override void HandleKeyDown(ConsoleKeyInfo key) {
             base.HandleKeyDown(key);
-            Debug.WriteLine("Window " + Title + " handling key press " + key.Key.ToString() + " (SHIFT: " + key.Modifiers.HasFlag(ConsoleModifiers.Shift) + ")");
+            Debug.WriteLine("Window " + Title + " handling key press " + key.Key.ToString() + " (CHAR: " + key.KeyChar + "; SHIFT: " + key.Modifiers.HasFlag(ConsoleModifiers.Shift) + ")");
 
             if(key.Key == ConsoleKey.Tab) {
                 FindNextInteractable(FocusedIndex, out _, out int newIdx);

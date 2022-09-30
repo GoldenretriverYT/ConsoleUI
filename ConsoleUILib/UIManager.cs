@@ -68,6 +68,8 @@ namespace ConsoleUILib
             Console.BufferHeight = Console.WindowHeight;
             handle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
 
+            NativeMethods.SetConsoleCP(65001);
+
             string strCmdText = "/C cls";
             System.Diagnostics.Process.Start("CMD.exe", strCmdText).WaitForExit();
 
