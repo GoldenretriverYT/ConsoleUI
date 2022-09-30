@@ -9,6 +9,8 @@ namespace ConsoleUILib.Controls
 {
     public abstract class BaseControl
     {
+        private static Random rnd = new();
+
         /// <summary>
         /// X position of the control within the window. For custom controls drawing, use <see cref="ActualX"/>
         /// </summary>
@@ -32,6 +34,8 @@ namespace ConsoleUILib.Controls
         /// </summary>
         public BaseWindow ParentWindow { get; set; }
 
+        public int RandomizedID { get; private set; }
+
         public virtual void DrawControl()
         {
 
@@ -39,6 +43,7 @@ namespace ConsoleUILib.Controls
 
         public BaseControl(BaseWindow parent) {
             ParentWindow = parent;
+            RandomizedID = rnd.Next(Int32.MinValue, Int32.MaxValue);
         }
     }
 }

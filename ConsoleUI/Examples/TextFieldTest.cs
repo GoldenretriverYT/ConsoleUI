@@ -17,9 +17,10 @@ namespace ConsoleUI
                 amogus.Title = "Render at " + DateTimeOffset.Now.Hour.ToString("00") + ":" + DateTimeOffset.Now.Minute.ToString("00") + ":" + DateTimeOffset.Now.Second.ToString("00");
             };
 
-            TextField field = new TextField(amogus, 0, 0, 20, 10);
+            TextField field = new TextField(amogus, 0, 0, 20, 9);
             field.Text = "right";
             field.HorizontalAlign = HAlign.LEFT;
+            field.VerticalAlign = VAlign.TOP;
             field.Pressed += (object sender, EventArgs e) => {
 
             };

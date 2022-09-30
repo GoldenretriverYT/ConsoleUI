@@ -49,11 +49,11 @@ namespace ConsoleUILib.Controls {
         public int Cursor { get; set; } = 0;
 
         /// <summary>
-        /// Horizontal align of the text
+        /// Horizontal align of the text (CURRENTLY COMPLETELY BROKEN, KEEP AT LEFT)
         /// </summary>
         public HAlign HorizontalAlign = HAlign.LEFT;
         /// <summary>
-        /// Vertical align of the text
+        /// Vertical align of the text (CURRENTLY COMPLETELY BROKEN, KEEP AT TOP)
         /// </summary>
         public VAlign VerticalAlign = VAlign.TOP;
         
@@ -87,6 +87,10 @@ namespace ConsoleUILib.Controls {
 
             if(blinkFrames == 0)
             {
+                if(HorizontalAlign != HAlign.LEFT && VerticalAlign != VAlign.TOP)
+                {
+                    WarningManager.ShowWarningOnce("warning-alignment-" + RandomizedID, "Changing text alignment of text fields is not recommended as its broken.");
+                }
                 cursorBlink = !cursorBlink;
                 blinkFrames = 5;
             }
@@ -146,7 +150,7 @@ namespace ConsoleUILib.Controls {
                 {
                     AddCharAtCursor('\n');
                 }
-                else if (key.Key == ConsoleKey.Backspace && Text.Length > 0)
+                else if (key.Key == ConsoleKey.Backspace && Text.Length > 0 && Cursor > 0)
                 {
                     Debug.WriteLine("Remvoing last char from text field (cur: " + Text + " len: " + Text.Length + ")");
                     Text = Text.Substring(0, Cursor-1) + Text.Substring(Cursor, Text.Length - Cursor);
