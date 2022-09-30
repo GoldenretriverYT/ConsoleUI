@@ -18,7 +18,7 @@ namespace ConsoleUI
             };
 
             TextField field = new TextField(amogus, 0, 0, 20, 9);
-            field.Text = "right";
+            field.Text = "abc äüö";
             field.HorizontalAlign = HAlign.LEFT;
             field.VerticalAlign = VAlign.TOP;
             field.Pressed += (object sender, EventArgs e) => {
