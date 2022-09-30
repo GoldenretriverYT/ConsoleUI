@@ -55,6 +55,11 @@ namespace ConsoleUILib
         /// </summary>
         public static int MaxFrameRate { get; set; } = 30;
 
+        /// <summary>
+        /// Max input events that can get handled per frame. Increasing it, will for example, improve clipboard speed
+        /// </summary>
+        public static int MaxInputEventsPerFrame { get; set; } = 10;
+
 
 
         /// <summary>
@@ -92,12 +97,13 @@ namespace ConsoleUILib
                 Console.ResetColor();
 
                 NativeMethods.GetNumberOfConsoleInputEvents(handle, out uint eventsAvailable);
+                int inputThisFrame = 0;
 
-                if (eventsAvailable > 0) {
+                while (eventsAvailable > 0 && inputThisFrame < MaxInputEventsPerFrame) {
                     var record = new NativeMethods.INPUT_RECORD();
                     uint recordLen = 0;
 
-                    if (!(NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen))) { throw new Exception(); }
+                    if (!(NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen))) { continue; }
 
                     Console.SetCursorPosition(0, 0);
                     switch (record.EventType) {
@@ -143,6 +149,8 @@ namespace ConsoleUILib
                         default: break;
                     }
 
+                    NativeMethods.GetNumberOfConsoleInputEvents(handle, out eventsAvailable);
+                    inputThisFrame++;
                 }
 
                 if (ClearScreenOnRedraw) {

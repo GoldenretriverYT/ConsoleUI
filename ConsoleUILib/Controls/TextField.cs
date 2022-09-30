@@ -143,7 +143,7 @@ namespace ConsoleUILib.Controls {
         {
             base.OnKeyDown(key);
 
-            Debug.WriteLine(IsSelected + " " + key.Key);
+            //Debug.WriteLine(IsSelected + " " + key.Key);
             if (IsSelected)
             {
                 if (key.Key == ConsoleKey.Enter)
@@ -152,7 +152,7 @@ namespace ConsoleUILib.Controls {
                 }
                 else if (key.Key == ConsoleKey.Backspace && Text.Length > 0 && Cursor > 0)
                 {
-                    Debug.WriteLine("Remvoing last char from text field (cur: " + Text + " len: " + Text.Length + ")");
+                    //Debug.WriteLine("Remvoing last char from text field (cur: " + Text + " len: " + Text.Length + ")");
                     Text = Text.Substring(0, Cursor-1) + Text.Substring(Cursor, Text.Length - Cursor);
                     Cursor--;
                 }

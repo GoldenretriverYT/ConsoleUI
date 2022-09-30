@@ -11,13 +11,13 @@ namespace ConsoleUI
     {
         public static void Start()
         {
-            CustomWindow amogus = new CustomWindow(2, 0, 20, 10);
+            CustomWindow amogus = new CustomWindow(2, 0, 60, 20);
             amogus.Title = "Text Align Test";
             amogus.RenderDone += (object sender, EventArgs e) => {
                 amogus.Title = "Render at " + DateTimeOffset.Now.Hour.ToString("00") + ":" + DateTimeOffset.Now.Minute.ToString("00") + ":" + DateTimeOffset.Now.Second.ToString("00");
             };
 
-            TextField field = new TextField(amogus, 0, 0, 20, 9);
+            TextField field = new TextField(amogus, 0, 0, 60, 19);
             field.Text = "abc äüö";
             field.HorizontalAlign = HAlign.LEFT;
             field.VerticalAlign = VAlign.TOP;
