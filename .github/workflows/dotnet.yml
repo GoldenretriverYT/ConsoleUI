@@ -27,3 +27,7 @@ jobs:
       with:
         name: DLL Output
         path: ConsoleUILib/bin/Debug/net6.0
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Test EXE Output
+        path: ConsoleUI/bin/Debug/net6.0
