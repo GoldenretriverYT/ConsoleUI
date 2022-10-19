@@ -10,6 +10,8 @@ namespace ConsoleUILib
     {
         private static List<BaseWindow> Windows { get; } = new();
         private static List<BaseWindow> pendingWindowRemovals = new();
+        private static List<BaseWindow> pendingWindows = new();
+
 
         private static ConsoleHandle handle;
         private static CONSOLE_SCREEN_BUFFER_INFO_EX cBuf;
@@ -186,7 +188,14 @@ namespace ConsoleUILib
                 ClearScreenOnRedraw = true;
             }
 
+            foreach(BaseWindow window in pendingWindows)
+            {
+                Windows.Add(window);
+                FocusedWindow = window;
+            }
+
             pendingWindowRemovals.Clear();
+            pendingWindows.Clear();
 
             foreach (BaseWindow window in Windows) {
                 window.HandleBeforeDraw();
@@ -216,8 +225,7 @@ namespace ConsoleUILib
         /// </summary>
         /// <param name="window">The window to add</param>
         public static void AddWindow(BaseWindow window) {
-            Windows.Add(window);
-            FocusedWindow = window;
+            pendingWindows.Add(window);
         }
         
         /// <summary>
