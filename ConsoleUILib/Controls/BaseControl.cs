@@ -34,6 +34,9 @@ namespace ConsoleUILib.Controls
         /// </summary>
         public BaseWindow ParentWindow { get; set; }
 
+        /// <summary>
+        /// A randomized id unique for every control.
+        /// </summary>
         public int RandomizedID { get; private set; }
 
         public virtual void DrawControl()

@@ -12,10 +12,10 @@ namespace ConsoleUILib
         private static List<BaseWindow> pendingWindowRemovals = new();
         private static List<BaseWindow> pendingWindows = new();
 
-
         private static ConsoleHandle handle;
         private static CONSOLE_SCREEN_BUFFER_INFO_EX cBuf;
 
+        #region State
         /// <summary>
         /// Current mouse cursor position in character coordinates
         /// </summary>
@@ -26,7 +26,14 @@ namespace ConsoleUILib
         /// </summary>
         public static BaseWindow FocusedWindow { get; set; }
 
-        // Flags for UI Manager
+        // All stuff related to framerate
+        /// <summary>
+        /// Contains the render times of the last <see cref="FrameTimesHistoryLength"/> frames
+        /// </summary>
+        public static List<double> FrameTimes { get; set; } = new();
+        #endregion
+
+        #region Flags & Options
         /// <summary>
         /// If set to true, it will clear the screen before rendering the next frame.
         /// It is automatically set to false after that.
@@ -37,13 +44,6 @@ namespace ConsoleUILib
         /// If set to true, the windows focus can change by using the cursor.
         /// </summary>
         public static bool AllowChangeFocusedWindow { get; set; } = true;
-
-
-        // All stuff related to framerate
-        /// <summary>
-        /// Contains the render times of the last <see cref="FrameTimesHistoryLength"/> frames
-        /// </summary>
-        public static List<double> FrameTimes { get; set; } = new();
 
         /// <summary>
         /// Defines how many frames should be kept in <see cref="FrameTimes"/> list.
@@ -61,7 +61,7 @@ namespace ConsoleUILib
         /// Max input events that can get handled per frame. Increasing it, will for example, improve clipboard speed
         /// </summary>
         public static int MaxInputEventsPerFrame { get; set; } = 10;
-
+        #endregion
 
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace ConsoleUILib
             RenderWindows();
         }
 
-
+        #region Window Managment
         /// <summary>
         /// Add a window to the UIManager.
         /// It will not be drawn until added using this method
@@ -236,5 +236,6 @@ namespace ConsoleUILib
         {
             pendingWindowRemovals.Add(window);
         }
+        #endregion
     }
 }

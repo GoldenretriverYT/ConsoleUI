@@ -10,7 +10,7 @@ namespace ConsoleUILib.Exceptions
     internal class DrawException : Exception
     {
         /// <summary>
-        /// Gets called when some drawing has gone wrong.
+        /// Gets thrown when some drawing has gone wrong.
         /// </summary>
         /// <param name="from"></param>
         /// <param name="msg"></param>

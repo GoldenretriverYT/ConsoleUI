@@ -11,15 +11,39 @@ namespace ConsoleUILib.Window
 {
     public abstract class BaseWindow
     {
+        /// <summary>
+        /// X position of the window
+        /// </summary>
         public int X { get; set; }
+        /// <summary>
+        /// Y position of the window
+        /// </summary>
         public int Y { get; set; }
+        /// <summary>
+        /// Width of the window
+        /// </summary>
         public int Width { get; set; }
+        /// <summary>
+        /// Height of the window
+        /// </summary>
         public int Height { get; set; }
+        /// <summary>
+        /// Title of the window, displayed in the title bar
+        /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// Background color of the window
+        /// </summary>
         public Color BackgroundColor { get; set; } = Color.Gray;
 
+        /// <summary>
+        /// Gets executed after rendering the whole window including all controls
+        /// </summary>
         public event EventHandler RenderDone;
+        /// <summary>
+        /// Gets executed right before the first drawing happens
+        /// </summary>
         public event EventHandler BeforeDraw;
 
         public virtual void DrawWindow()
